@@ -34,10 +34,10 @@ if __name__ == '__main__':
                         default=1,
                         help='start from this epoch')
     parser.add_argument('--train_batch_divide', '-trb', type=int,
-                        default=4,
+                        default=2,
                         help='divid batch number by this')
     parser.add_argument('--test_batch_divide', '-teb', type=int,
-                        default=4,
+                        default=2,
                         help='divid batch number by this')
     parser.add_argument('--lr', '-lr', type=float,
                         default=0.1,
