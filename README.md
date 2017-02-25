@@ -14,6 +14,26 @@ Implementation of Shake-Shake [[1]][Paper] by chainer
 
 # Details about my implementation
 
+* Data augmentation  
+Train: Pictures are randomly resized in the range of [32, 36], then 32x32 patches are extracted randomly and are normalized locally. Horizontal flipping is applied with 0.5 probability.  
+Test: Pictures are resized to 32x32, then they are normalized locally. Single image test is used to calculate total accuracy. 
+
+* Learning rate schedule  
+Initial learning rate is 0.1 and learning rate is divided by 10 at [60, 120. 160] epochs. The total number of epochs is 200.
+
+* Optimization  
+Momentum SGD with 0.9 momentum  
+
+* Weight decay    
+0.0005  
+
+* Batch size  
+128
+
+* Cosine annealing  
+Not implemented
+
+
 # Cifar10 result
 
 | network              | model  | total accuracy (%) |
