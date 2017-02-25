@@ -72,6 +72,8 @@ class Double(nutszebra_chainer.Model):
         sizes = list(x.data.shape)
         sizes[where] = pad
         pad_mat = self.prepare_input(np.zeros(sizes, dtype=dtype), volatile=x.volatile)
+        if not type(x.data) == np.ndarray:
+            pad_mat.to_gpu()
         return F.concat((pad_mat, x), axis=where)
 
     def count_parameters(self):
