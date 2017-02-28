@@ -54,7 +54,7 @@ if __name__ == '__main__':
     model = shake_shake.ShakeShake(10, (dim, dim * 2, dim * 4), (4, 4, 4))
     print('Done')
     print('parameters: {}'.format(model.count_parameters()))
-    optimizer = nutszebra_optimizer.OptimizerWideRes(model, lr=lr)
+    optimizer = nutszebra_optimizer.OptimizerWideRes(model, schedule=(120, 160), lr=lr)
     args['model'] = model
     args['optimizer'] = optimizer
     args['da'] = nutszebra_data_augmentation.DataAugmentationCifar10NormalizeSmall
