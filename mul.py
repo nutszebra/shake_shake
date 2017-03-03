@@ -23,12 +23,12 @@ class Mul(function.Function):
         return x1 * alpha + x2 * (xp.ones(x1.shape, dtype=x1.dtype) - alpha),
 
     def backward(self, inputs, grad_outputs):
-        gx1, gx2 = inputs[:2]
-        xp = cuda.get_array_module(gx1)
-        beta = xp.empty(gx1.shape, dtype=gx1.dtype)
+        gx = grad_outputs[0]
+        xp = cuda.get_array_module(gx)
+        beta = xp.empty(gx.shape, dtype=gx.dtype)
         for i in six.moves.range(len(beta)):
             beta[i] = xp.random.rand()
-        return gx1 * beta, gx2 * (xp.ones(gx1.shape, dtype=gx1.dtype) - beta)
+        return gx * beta, gx * (xp.ones(gx.shape, dtype=gx.dtype) - beta)
 
 
 def mul(x1, x2):
