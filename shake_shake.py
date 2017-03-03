@@ -5,6 +5,7 @@ import chainer.functions as F
 import nutszebra_chainer
 import functools
 from collections import defaultdict
+from mul import mul
 
 
 class BN_ReLU_Conv(nutszebra_chainer.Model):
@@ -110,28 +111,12 @@ class ResBlock(nutszebra_chainer.Model):
     def count_parameters(self):
         return int(np.sum([link.count_parameters() for _, link in self.modules])) + self.identity.count_parameters()
 
-    @staticmethod
-    def mul(branch_num, train=True):
-        if train is True:
-            coefficients = np.random.rand(branch_num)
-            coefficients = coefficients / np.sum(coefficients)
-        else:
-            coefficients = [1.0 / branch_num for _ in six.moves.range(branch_num)]
-        return coefficients
-
     def __call__(self, x, train=False):
         branches = []
         for i in six.moves.range(self.branch_num):
             branches.append(self['branch{}'.format(i)](x, train=train))
         x = self.identity(x, train=train)
-        h = []
-        for batch in six.moves.range(x.data.shape[0]):
-            tmp = [x[batch:batch + 1]]
-            W = self.mul(self.branch_num, train=train)
-            for branch, w in six.moves.zip(branches, W):
-                tmp.append(branch[batch:batch + 1] * w)
-            h.append(functools.reduce(lambda a, b: a + b, tmp))
-        return F.concat(h, axis=0)
+        return mul(*branches) + x
 
 
 class ShakeShake(nutszebra_chainer.Model):
