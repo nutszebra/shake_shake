@@ -22,7 +22,7 @@ if __name__ == '__main__':
                         default='./',
                         help='model and optimizer will be saved every epoch')
     parser.add_argument('--epoch', '-e', type=int,
-                        default=200,
+                        default=300,
                         help='maximum epoch')
     parser.add_argument('--batch', '-b', type=int,
                         default=128,
@@ -40,7 +40,7 @@ if __name__ == '__main__':
                         default=2,
                         help='divid batch number by this')
     parser.add_argument('--lr', '-lr', type=float,
-                        default=0.1,
+                        default=0.2,
                         help='leraning rate')
     parser.add_argument('--dim', '-dim', type=int,
                         default=64,
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     model = shake_shake.ShakeShake(10, (dim, dim * 2, dim * 4), (4, 4, 4))
     print('Done')
     print('parameters: {}'.format(model.count_parameters()))
-    optimizer = nutszebra_optimizer.OptimizerWideRes(model, schedule=(120, 160), lr=lr)
+    optimizer = nutszebra_optimizer.OptimizerPyramidalResNet(model, lr=lr)
     args['model'] = model
     args['optimizer'] = optimizer
     args['da'] = nutszebra_data_augmentation.DataAugmentationCifar10NormalizeSmall
