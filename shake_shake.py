@@ -133,8 +133,10 @@ class ShakeShake(nutszebra_chainer.Model):
         in_channel = out_channels[0]
         strides = [[(1, 1) for i in six.moves.range(N[ii])] for ii in six.moves.range(len(out_channels))]
         identities = [[DoNothing() for i in six.moves.range(N[ii])] for ii in six.moves.range(len(out_channels))]
-        strides[1][0], identities[1][0] = (2, 1), Double(64, 128)
-        strides[2][0], identities[2][0] = (2, 1), Double(128, 256)
+        modules += [('double1', Double(64, 128))]
+        modules += [('double2', Double(128, 256))]
+        strides[1][0], identities[1][0] = (2, 1), modules[-2][1]
+        strides[2][0], identities[2][0] = (2, 1), modules[-1][1]
         for i in six.moves.range(len(out_channels)):
             for n in six.moves.range(N[i]):
                 modules.append(('res_block{}_{}'.format(i, n), ResBlock(in_channel, out_channels[i], branch_num, (3, 3), strides[i][n], (1, 1), identities[i][n])))
