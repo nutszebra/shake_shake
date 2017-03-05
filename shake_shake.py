@@ -74,6 +74,17 @@ class Double(nutszebra_chainer.Model):
         x2 = self.conv2(F.average_pooling_2d(self.zero_pads(self.zero_pads(x, 1, 2), 1, 3), 1, 2, 0)[:, :, 1:, 1:])
         return self.bn(F.concat((x1, x2), axis=1), test=not train)
 
+    def weight_initialization(self):
+        self.conv1.W.data = self.weight_relu_initialization(self.conv1)
+        self.conv1.b.data = self.bias_initialization(self.conv1, constant=0)
+        self.conv2.W.data = self.weight_relu_initialization(self.conv2)
+        self.conv2.b.data = self.bias_initialization(self.conv2, constant=0)
+
+    def count_parameters(self):
+        count = functools.reduce(lambda a, b: a * b, self.conv1.W.data.shape)
+        count += functools.reduce(lambda a, b: a * b, self.conv2.W.data.shape)
+        return count
+
     def zero_pads(self, x, pad, where, dtype=np.float32):
         sizes = list(x.data.shape)
         sizes[where] = pad
@@ -81,9 +92,6 @@ class Double(nutszebra_chainer.Model):
         if not type(x.data) == np.ndarray:
             pad_mat.to_gpu()
         return F.concat((pad_mat, x), axis=where)
-
-    def count_parameters(self):
-        return 0
 
 
 class DoNothing(nutszebra_chainer.Model):
