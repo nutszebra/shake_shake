@@ -60,14 +60,18 @@ class ReLU_Conv_BN_ReLU_Conv_BN(nutszebra_chainer.Model):
 
 class Double(nutszebra_chainer.Model):
 
-    def __init__(self):
-        super(Double, self).__init__()
+    def __init__(self, in_channel, out_channel):
+        super(Double, self).__init__(
+            conv1=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 1),
+            conv2=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 1),
+            bn=L.BatchNormalization(out_channel),
+        )
 
     def __call__(self, *args, **kwargs):
-        x = args[0]
-        x1 = F.average_pooling_2d(x, 1, 2, 0)
-        x2 = F.average_pooling_2d(self.zero_pads(self.zero_pads(x, 1, 2), 1, 3), 1, 2, 0)[:, :, 1:, 1:]
-        return F.concat((x1, x2), axis=1)
+        x, train = args[0], args[1]
+        x1 = self.conv1(F.average_pooling_2d(x, 1, 2, 0))
+        x2 = self.conv2(F.average_pooling_2d(self.zero_pads(self.zero_pads(x, 1, 2), 1, 3), 1, 2, 0)[:, :, 1:, 1:])
+        return self.bn(F.concat((x1, x2), axis=1), test=not train)
 
     def zero_pads(self, x, pad, where, dtype=np.float32):
         sizes = list(x.data.shape)
@@ -128,8 +132,8 @@ class ShakeShake(nutszebra_chainer.Model):
         in_channel = out_channels[0]
         strides = [[(1, 1) for i in six.moves.range(N[ii])] for ii in six.moves.range(len(out_channels))]
         identities = [[DoNothing() for i in six.moves.range(N[ii])] for ii in six.moves.range(len(out_channels))]
-        strides[1][0], identities[1][0] = (2, 1), Double()
-        strides[2][0], identities[2][0] = (2, 1), Double()
+        strides[1][0], identities[1][0] = (2, 1), Double(64, 128)
+        strides[2][0], identities[2][0] = (2, 1), Double(128, 256)
         for i in six.moves.range(len(out_channels)):
             for n in six.moves.range(N[i]):
                 modules.append(('res_block{}_{}'.format(i, n), ResBlock(in_channel, out_channels[i], branch_num, (3, 3), strides[i][n], (1, 1), identities[i][n])))
