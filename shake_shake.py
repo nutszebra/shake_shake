@@ -68,7 +68,8 @@ class Double(nutszebra_chainer.Model):
         )
 
     def __call__(self, *args, **kwargs):
-        x, train = args[0], args[1]
+        x = args[0]
+        train = kwargs['train']
         x1 = self.conv1(F.average_pooling_2d(x, 1, 2, 0))
         x2 = self.conv2(F.average_pooling_2d(self.zero_pads(self.zero_pads(x, 1, 2), 1, 3), 1, 2, 0)[:, :, 1:, 1:])
         return self.bn(F.concat((x1, x2), axis=1), test=not train)
