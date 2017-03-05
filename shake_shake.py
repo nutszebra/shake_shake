@@ -62,8 +62,8 @@ class Double(nutszebra_chainer.Model):
 
     def __init__(self, in_channel, out_channel):
         super(Double, self).__init__(
-            conv1=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 1),
-            conv2=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 1),
+            conv1=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 0),
+            conv2=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 0),
             bn=L.BatchNormalization(out_channel),
         )
 
