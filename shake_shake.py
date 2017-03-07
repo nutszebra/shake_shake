@@ -61,9 +61,11 @@ class ReLU_Conv_BN_ReLU_Conv_BN(nutszebra_chainer.Model):
 class Double(nutszebra_chainer.Model):
 
     def __init__(self, in_channel, out_channel):
+        out_channel1 = int(out_channel) / 2
+        out_channel2 = out_channel - 2
         super(Double, self).__init__(
-            conv1=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 0),
-            conv2=L.Convolution2D(in_channel, int(out_channel / 2), 1, 1, 0),
+            conv1=L.Convolution2D(in_channel, int(out_channel1), 1, 1, 0),
+            conv2=L.Convolution2D(in_channel, int(out_channel2), 1, 1, 0),
             bn=L.BatchNormalization(out_channel),
         )
 
