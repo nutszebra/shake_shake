@@ -62,7 +62,7 @@ class Double(nutszebra_chainer.Model):
 
     def __init__(self, in_channel, out_channel):
         out_channel1 = int(out_channel) / 2
-        out_channel2 = out_channel - 2
+        out_channel2 = out_channel - out_channel1
         super(Double, self).__init__(
             conv1=L.Convolution2D(in_channel, int(out_channel1), 1, 1, 0),
             conv2=L.Convolution2D(in_channel, int(out_channel2), 1, 1, 0),
@@ -131,7 +131,7 @@ class ResBlock(nutszebra_chainer.Model):
         for i in six.moves.range(self.branch_num):
             branches.append(self['branch{}'.format(i)](x, train=train))
         x = self.identity(x, train=train)
-        return mul(*branches) + x
+        return mul(*branches, train=train) + x
 
 
 class ShakeShake(nutszebra_chainer.Model):
