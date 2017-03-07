@@ -14,12 +14,12 @@ class Mul(function.Function):
     def __init__(self):
         pass
 
-    def forward(self, inputs):
-        x1, x2 = inputs[:2]
+    def forward(self, x1, x2, train=False):
         xp = cuda.get_array_module(x1)
-        alpha = xp.empty(x1.shape, dtype=x1.dtype)
-        for i in six.moves.range(len(alpha)):
-            alpha[i] = xp.random.rand()
+        alpha = xp.ones(x1.shape, dtype=x1.dtype) * 0.5
+        if train is True:
+            for i in six.moves.range(len(alpha)):
+                alpha[i] = xp.random.rand()
         return x1 * alpha + x2 * (xp.ones(x1.shape, dtype=x1.dtype) - alpha),
 
     def backward(self, inputs, grad_outputs):
@@ -31,6 +31,5 @@ class Mul(function.Function):
         return gx * beta, gx * (xp.ones(gx.shape, dtype=gx.dtype) - beta)
 
 
-def mul(x1, x2):
-    func = Mul()
-    return func(x1, x2)
+def mul(x1, x2, train=False):
+    return Mul()(x1, x2, train=train)
