@@ -11,13 +11,14 @@ def _pair(x):
 
 class Mul(function.Function):
 
-    def __init__(self):
-        pass
+    def __init__(self, train=False):
+        self.train = train
 
-    def forward(self, x1, x2, train=False):
+    def forward(self, inputs):
+        x1, x2 = inputs[:2]
         xp = cuda.get_array_module(x1)
         alpha = xp.ones(x1.shape, dtype=x1.dtype) * 0.5
-        if train is True:
+        if self.train is True:
             for i in six.moves.range(len(alpha)):
                 alpha[i] = xp.random.rand()
         return x1 * alpha + x2 * (xp.ones(x1.shape, dtype=x1.dtype) - alpha),
@@ -32,4 +33,4 @@ class Mul(function.Function):
 
 
 def mul(x1, x2, train=False):
-    return Mul()(x1, x2, train=train)
+    return Mul(train)(x1, x2)
