@@ -1,6 +1,7 @@
 import chainer
 from chainer import optimizers
 import nutszebra_basic_print
+import numpy as np
 
 
 class Optimizer(object):
@@ -286,3 +287,28 @@ class OptimizerPyramidalResNet(Optimizer):
             lr = self.optimizer.lr / 10
             print('lr is changed: {} -> {}'.format(self.optimizer.lr, lr))
             self.optimizer.lr = lr
+
+
+class OptimizerCosineAnnealing(Optimizer):
+
+    def __init__(self, model=None, eta_max=0.2, eta_min=0.2 * 10 ** -2, total_epoch=1800, momentum=0.9, weight_decay=1.0e-4):
+        super(OptimizerCosineAnnealing, self).__init__(model)
+        self.eta_max = eta_max
+        self.eta_min = eta_min
+        self.total_epoch = total_epoch
+        lr = self.calc_lr(1)
+        print('initial learing rate: {}'.format(lr))
+        optimizer = optimizers.MomentumSGD(lr, momentum)
+        weight_decay = chainer.optimizer.WeightDecay(weight_decay)
+        optimizer.setup(self.model)
+        optimizer.add_hook(weight_decay)
+        self.optimizer = optimizer
+
+    def calc_lr(self, i):
+        return self.eta_min + 0.5 * (np.eta_max - np.eta_min) * (1 + np.cos(np.pi * float(i) / self.total_epoch))
+
+    def __call__(self, i):
+        new_lr = self.calc_lr(i)
+        old_lr = self.optimizer.lr
+        print('lr is changed: {} -> {}'.format(old_lr, new_lr))
+        self.optimizer.lr = new_lr
