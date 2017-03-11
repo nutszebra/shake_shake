@@ -305,7 +305,7 @@ class OptimizerCosineAnnealing(Optimizer):
         self.optimizer = optimizer
 
     def calc_lr(self, i):
-        return self.eta_min + 0.5 * (np.eta_max - np.eta_min) * (1 + np.cos(np.pi * float(i) / self.total_epoch))
+        return self.eta_min + 0.5 * (self.eta_max - self.eta_min) * (1 + np.cos(np.pi * float(i) / self.total_epoch))
 
     def __call__(self, i):
         new_lr = self.calc_lr(i)
