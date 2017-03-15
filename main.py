@@ -58,7 +58,7 @@ if __name__ == '__main__':
     model = shake_shake.ShakeShake(10, (dim, dim * 2, dim * 4), (4, 4, 4))
     print('Done')
     print('parameters: {}'.format(model.count_parameters()))
-    optimizer = nutszebra_optimizer.OptimizerCosineAnnealing(model, eta_max=eta_max, eta_min=eta_min, total_epoch=args['epoch'])
+    optimizer = nutszebra_optimizer.OptimizerCosineAnnealing(model, eta_max=eta_max, eta_min=eta_min, total_epoch=args['epoch'], start_epoch=args['start_epoch'])
     args['model'] = model
     args['optimizer'] = optimizer
     args['da'] = nutszebra_data_augmentation.DataAugmentationCifar10NormalizeSmall
