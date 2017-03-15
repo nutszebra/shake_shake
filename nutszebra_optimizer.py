@@ -291,12 +291,12 @@ class OptimizerPyramidalResNet(Optimizer):
 
 class OptimizerCosineAnnealing(Optimizer):
 
-    def __init__(self, model=None, eta_max=0.2, eta_min=0.2 * 10 ** -2, total_epoch=1800, momentum=0.9, weight_decay=1.0e-4):
+    def __init__(self, model=None, eta_max=0.2, eta_min=0.2 * 10 ** -2, total_epoch=1800, momentum=0.9, weight_decay=1.0e-4, start_epoch=1):
         super(OptimizerCosineAnnealing, self).__init__(model)
         self.eta_max = eta_max
         self.eta_min = eta_min
         self.total_epoch = total_epoch
-        lr = self.calc_lr(1)
+        lr = self.calc_lr(start_epoch)
         print('initial learing rate: {}'.format(lr))
         optimizer = optimizers.MomentumSGD(lr, momentum)
         weight_decay = chainer.optimizer.WeightDecay(weight_decay)
