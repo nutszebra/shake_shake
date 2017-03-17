@@ -19,13 +19,13 @@ Train: Pictures are randomly resized in the range of [32, 36], then 32x32 patche
 Test: Pictures are resized to 32x32, then they are normalized locally. Single image test is used to calculate total accuracy. 
 
 * Learning rate schedule  
-Initial learning rate is 0.1 and learning rate is divided by 10 at [60, 120. 160] epochs. The total number of epochs is 200.
+Initial learning rate is 0.2 and learning rate is divided by 10 at [150, 225] epochs. The total number of epochs is 300.
 
 * Optimization  
 Momentum SGD with 0.9 momentum  
 
 * Weight decay    
-0.0005  
+0.0001  
 
 * Batch size  
 128
@@ -33,15 +33,20 @@ Momentum SGD with 0.9 momentum
 * Cosine annealing  
 Not implemented
 
+* Shake-Shake  
+forward: Shake  
+backward: Shake  
+level: Image  
+
 
 # Cifar10 result
 
-| network              | model  | total accuracy (%) |
-|:---------------------|--------|-------------------:|
-| [[1]][Paper]         | 2x32d  | 96.52              |
-| [[1]][Paper]         | 2x64d  | 97.14              |
-| [[1]][Paper]         | 2x96d  | 97.28              |
-| my implementation    | 2x64d  | soon               |
+| network              | model(Shake-Shake-Image)  | total accuracy (%) |
+|:---------------------|---------------------------|-------------------:|
+| [[1]][Paper]         | 2x32d                     | 96.52              |
+| [[1]][Paper]         | 2x64d                     | 97.14              |
+| [[1]][Paper]         | 2x96d                     | 97.28              |
+| my implementation    | 2x64d                     | 96.22              |
 
 <img src="https://github.com/nutszebra/shake_shake/blob/master/loss.jpg" alt="loss" title="loss">
 <img src="https://github.com/nutszebra/shake_shake/blob/master/accuracy.jpg" alt="total accuracy" title="total accuracy">
