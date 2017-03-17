@@ -50,4 +50,5 @@ level: Image
 
 # References
 Shake-Shake regularization of 3-branch residual networks [[1]][Paper]  
+
 [paper]: https://openreview.net/forum?id=HkO-PCmYl "Paper"
