@@ -28,7 +28,7 @@ Momentum SGD with 0.9 momentum
 128
 
 * Cosine annealing  
-eta_max is 0.2 and eta_min is 0.002. The numbe rof total epoch is 1800.  
+eta_max is 0.2 and eta_min is 0.002. The number of total epoch is 1800.  
 
 * Shake-Shake  
 forward: Shake  
