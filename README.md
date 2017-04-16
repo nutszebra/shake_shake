@@ -40,9 +40,9 @@ level: Image
 
 | network              | model(Shake-Shake-Image)  | total accuracy (%) |
 |:---------------------|---------------------------|-------------------:|
-| [[1]][Paper]         | 2x32d                     | 96.52              |
-| [[1]][Paper]         | 2x64d                     | 97.14              |
-| [[1]][Paper]         | 2x96d                     | 97.28              |
+| [[1]][Paper]         | 2x32d                     | 96.45              |
+| [[1]][Paper]         | 2x64d                     | 97.02              |
+| [[1]][Paper]         | 2x96d                     | 97.14              |
 | my implementation    | 2x64d                     | 96.69              |
 
 <img src="https://github.com/nutszebra/shake_shake/blob/master/loss.jpg" alt="loss" title="loss">
