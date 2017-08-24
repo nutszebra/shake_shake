@@ -102,3 +102,7 @@ log.json
 # cifar10
 cifar10.pkl
 cifar-10-batches-py
+
+# cifar100
+cifar100.pkl
+cifar-100-python
